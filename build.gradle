@@ -1,0 +1,36 @@
+apply plugin: 'application'
+apply plugin: 'java'
+apply plugin: 'checkstyle'
+apply plugin: "jacoco"
+
+mainClassName = "de.hspforzheim.ml.sudoku_solver.controller.MainWindowController"
+
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile group: 'org.jsoup', name: 'jsoup', version: '1.11.2'
+	testCompile group: 'junit', name: 'junit', version: '4.12'
+
+}
+
+compileJava {
+	options.encoding = "UTF-8"
+}
+
+jar {
+    manifest {
+        attributes "Main-Class": "de.hspforzheim.ml.sudoku_solver.controller.MainWindowController"
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+checkstyle {
+       configFile = new File(rootDir, "checkstyle.xml")
+	ignoreFailures = true
+    }
